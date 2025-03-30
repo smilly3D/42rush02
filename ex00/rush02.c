@@ -9,6 +9,8 @@ typedef struct s_dict_entry
 	char *value;
 }	t_dict_entry;
 
+//funcoes auxiliares.
+
 int ft_strlen(char *str)
 {
 	int i = 0;
@@ -16,7 +18,6 @@ int ft_strlen(char *str)
 		i++;
 	return i;
 }
-
 
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -67,29 +68,7 @@ void ft_itoa(int num, char *buffer)
 		num /= 10;
 	}
 }
-
-
-
-void	search_and_print(t_dict_entry *dict, int entries_count, char *number)
-{
-	int i = 0;
-	int found = 0;
-
-	while (i < entries_count)
-	{
-		if (ft_strcmp(dict[i].key, number) == 0)
-		{
-			write(1, dict[i].value, ft_strlen(dict[i].value));
-			write(1, "\n", 1);
-			found = 1;
-			break;
-		}
-		i++;
-	}
-	if (!found)
-		write(1, "Dict Error\n", 11);
-}
-
+// Essa função percorre o dicionário armazenado em um array de structs (t_dict_entry) e busca um número específico (como string).
 char *dict_lookup(t_dict_entry *dict, int entries_count, char *number)
 {
 	int i = 0;
@@ -102,6 +81,7 @@ char *dict_lookup(t_dict_entry *dict, int entries_count, char *number)
 	return NULL; // não encontrado
 }
 
+// Essa função recebe um número inteiro e o converte em texto por extenso.
 void print_number_text(t_dict_entry *dict, int entries_count, int num)
 {
 	char num_str[20];
@@ -148,6 +128,7 @@ void print_number_text(t_dict_entry *dict, int entries_count, int num)
 	}
 }
 
+// A função count_entries percorre o conteúdo lido do dicionário (em formato de string) e conta quantas linhas válidas
 int	count_entries(char *dict_content)
 {
 	int i = 0;
@@ -162,6 +143,7 @@ int	count_entries(char *dict_content)
 	return count;
 }
 
+// Esta função percorre o conteúdo do dicionário (dict_content), linha por linha, e armazena cada entrada (chave e valor) em uma estrutura de dados (t_dict_entry) alocada dinamicamente.
 t_dict_entry *store_dict_entries(char *dict_content, int entries_count)
 {
 	t_dict_entry *dict;
@@ -218,57 +200,6 @@ t_dict_entry *store_dict_entries(char *dict_content, int entries_count)
 	return dict;
 }
 
-
-
-// Função inicial para testar separação das entradas corretamente
-void	parse_dict(char *dict_content)
-{
-	int i = 0;
-	while (dict_content[i])
-	{
-		// pular quebras de linhas extras
-		while (dict_content[i] == '\n')
-			i++;
-
-		if (!dict_content[i])
-			break;
-
-		// obter a chave
-		char key[256];
-		int k = 0;
-		while (dict_content[i] && dict_content[i] != ':' && k < 255)
-			key[k++] = dict_content[i++];
-		key[k] = '\0';
-
-		// pula ':'
-		if (dict_content[i] == ':')
-			i++;
-
-		// pula espaços antes do valor
-		while (dict_content[i] == ' ')
-			i++;
-
-		// obter o valor
-		char value[256];
-		int v = 0;
-		while (dict_content[i] && dict_content[i] != '\n' && v < 255)
-			value[v++] = dict_content[i++];
-		value[v] = '\0';
-
-		// exibir chave e valor usando apenas write()
-		write(1, "Chave: '", 8);
-		write(1, key, k);
-		write(1, "' - Valor: '", 12);
-		write(1, value, v);
-		write(1, "'\n", 2);
-
-		// pula quebra de linha final
-		if (dict_content[i] == '\n')
-			i++;
-	}
-}
-
-
 // Função para obter o tamanho do arquivo
 int	get_file_size(char *filename)
 {
@@ -316,6 +247,7 @@ char	*read_dict(char *filename)
 	return (buffer);
 }
 
+// Função para validar de validação de input
 int is_numeric(char *str)
 {
 	int i;
